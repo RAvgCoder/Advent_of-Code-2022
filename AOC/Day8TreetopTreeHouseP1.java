@@ -31,45 +31,69 @@ public class Day8TreetopTreeHouseP1 {
             for (int y = 1; y < mapInt[x].length-1; y++) {
                 //top row
                 boolean touched = false;
-                int []xOffset = {-1,0, 0,1,};
-                int []yOffset = {0,-1, 1,0,};
-                int xPose =0;
-                int yPose = 0;
+                int []xInnerOffset = {-1,0, 0,1,};
+                int []yInnerOffset = {0,-1, 1,0,};
+                int xInPose =0;
+                int yInPose = 0;
+                int i =0;
+                int []xOutOffset = {0, i, i, numOfLines-1,};
+                int []yOutOffset = {y, 0, mapInt.length-1,y,};
 
-                if (x==1){
-
-                    for (int i = 0; i < 3; i++) {
-                        xPose = x + xOffset[i];
-                        yPose = y + yOffset[i];
-                        if (mapInt[xPose][yPose] < mapInt[x][y] && !touched){
-                            visibleTree++;
-                            touched = true;
-                        }
-                    }
-
-                    //Bottom row
+                for (int j = 0; j < 3; j++) {
+                    int map = mapInt[xOutOffset[i]][yOutOffset[j]];
+                    System.out.println("---------");
+                    System.out.println(xOutOffset[i]);
+                    System.out.println(yOutOffset[j]);
+                    System.out.println("---------");
+                    System.out.println(i+""+j+" (()(()(())()() "+ map);
+                    System.out.println(map+"  ===============");
                 }
-                else if (x == numOfLines-2){
-                    for (int i = 1; i < 4; i++) {
-                        xPose = x + xOffset[i];
-                        yPose = y + yOffset[i];
-                        if (mapInt[xPose][yPose] < mapInt[x][y] && !touched) {
-                            visibleTree++;
-                            touched = true;
-                        }
-                    }
+                System.out.println("");
 
-                    //others
-                } else {
-                    for (int i = 1; i < 3; i++) {
-                        xPose = x + xOffset[i];
-                        yPose = y + yOffset[i];
-                            if (mapInt[xPose][yPose] < mapInt[x][y] && !touched) {
-                                visibleTree++;
-                                touched = true;
-                            }
-                    }
-                }
+                i++;
+
+
+
+//                for (int i = 0; i < 4; i++) {
+//                    xInPose = x + xInnerOffset[i];
+//                    yInPose = y + yInnerOffset[i];
+//                    if (mapInt[xInPose][yInPose] < mapInt[x][y] && !touched){
+//                        System.out.println(mapInt[x][y]);
+//                        System.out.println(x+""+y);
+////                        if (  < mapInt[x][y]){
+//                            visibleTree++;
+//                            touched = true;
+////                        }
+//                    }
+//                }
+
+//                if (x==1){
+//
+
+//
+//                    //Bottom row
+//                }
+//                else if (x == numOfLines-2){
+//                    for (int i = 1; i < 4; i++) {
+//                        xPose = x + xInnerOffset[i];
+//                        yPose = y + yOffset[i];
+//                        if (mapInt[xPose][yPose] < mapInt[x][y] && !touched) {
+//                            visibleTree++;
+//                            touched = true;
+//                        }
+//                    }
+//
+//                    //others
+//                } else {
+//                    for (int i = 1; i < 3; i++) {
+//                        xPose = x + xInnerOffset[i];
+//                        yPose = y + yOffset[i];
+//                            if (mapInt[xPose][yPose] < mapInt[x][y] && !touched) {
+//                                visibleTree++;
+//                                touched = true;
+//                            }
+//                    }
+//                }
 
             }
         }
