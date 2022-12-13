@@ -5,8 +5,8 @@ public class trials {
         long start = System.nanoTime();
 
         /////////////////{Setup Start}/////////////////////////////
-        String filePath = "AOC/test.txt";
-//        String filePath = "AOC/TreetopTreeHouse.txt";
+//        String filePath = "AOC/test.txt";
+        String filePath = "AOC/TreetopTreeHouse.txt";
         int numOfLines = myMethodTemplates.countLineBufferedReader(filePath);
         String inputString[] = new String[numOfLines];
         myMethodTemplates.readFilesToArray(inputString, filePath);
@@ -24,107 +24,120 @@ public class trials {
 //            System.out.println("");
         }
 
-        int []xOffset = {-1,0, 0,1,};
-        int []yOffset = {0,-1, 1,0,};
-        int xPose =0;
-        int yPose = 0;
         int visibleTree =0;
-        int tempNum = 0;
-        //Loops through the map
-        for (int i = 0; i < mapInt.length; i++) {
-            for (int j = 0; j < mapInt[i].length; j++) {
-                //Guards for edges
-                if ((i!=0) && (j!=0) && (j!= mapInt[i].length-1) && (i!= mapInt.length-1)){
-                    System.out.println(mapInt[i][j]);
-                    System.out.println("---------------"+tempNum);
+        for (int x = 1; x < mapInt.length-1; x++) {
+            for (int y = 1; y < mapInt[x].length-1; y++) {
+                //top row
+                boolean touched = false;
+                int tempVisTree = 0;
+                int []xInnerOffset = {-1,0, 0,1,};
+                int []yInnerOffset = {0,-1, 1,0,};
+                int xInPose =0;
+                int yInPose = 0;
+                int []xOutOffset = {0,  x,   x,                numOfLines-1,};
+                int []yOutOffset = {y,  0,  mapInt.length-1,    y,};
 
-                    if (i == 1 && j == 1){
-                        xPose = i + xOffset[0];
-                        yPose = j + yOffset[0];
-                        tempNum = mapInt[xPose][yPose];
-                        if (mapInt[i][j] > tempNum ){
-                            visibleTree++;
-                        }
-                        System.out.println("---------------"+tempNum);
+                //Searches the nearest adjacent neighbours
+                for (int i = 0; i < 4; i++) {
+                    xInPose = x + xInnerOffset[i];
+                    yInPose = y + yInnerOffset[i];
+                    if (mapInt[xInPose][yInPose] <= mapInt[x][y] && !touched){
+                        int map = mapInt[xOutOffset[i]][yOutOffset[i]];
 
-                        xPose = i + xOffset[1];
-                        yPose = j + yOffset[1];
-                        tempNum = mapInt[xPose][yPose];
-                        if (mapInt[i][j] > tempNum ){
-                            visibleTree++;
+                        switch (i){
+                            case 0 -> {
+                                for (int xPrime = x-1; xPrime >= xOutOffset[i]; xPrime--) {
+                                    if (mapInt[xPrime][y] < mapInt[x][y]){
+                                        tempVisTree++;
+                                        System.out.print(mapInt[xPrime][y]);
+                                        System.out.println("("+mapInt[xPrime][y]+")"+"["+xPrime+","+y+"]"+"{"+mapInt[x][y]+"}"+x+","+y+"-->"+i);
+
+                                    }else {
+                                        tempVisTree =0;
+                                        System.out.println("("+mapInt[xPrime][y]+")"+"["+xPrime+","+y+"]"+"{"+mapInt[x][y]+"}"+x+","+y+"<<<"+i);
+
+
+                                        break;
+                                    }
+                                }
+                            }
+                            case 1 -> {
+                                for (int yPrime = y-1; yPrime >= yOutOffset[i]; yPrime--) {
+                                    if (mapInt[x][yPrime] < mapInt[x][y]){
+                                        tempVisTree++;
+                                        System.out.print(mapInt[x][yPrime]);
+                                        System.out.println("("+mapInt[x][yPrime]+")"+"["+x+","+yPrime+"]"+"{"+mapInt[x][y]+"}"+x+","+y+"<--<"+i);
+
+                                    }else {
+                                        tempVisTree =0;
+                                        System.out.println("("+mapInt[x][yPrime]+")"+"["+x+","+yPrime+"]"+"{"+mapInt[x][y]+"}"+x+","+y+"<<<"+i);
+
+                                        break;
+                                    }
+                                }
+                            }
+                            case 2 -> {
+                                for (int yPrime = y+1; yPrime <= yOutOffset[i]; yPrime++) {
+                                    if (mapInt[x][yPrime] < mapInt[x][y]){
+                                        tempVisTree++;
+                                        System.out.print(mapInt[x][yPrime]);
+                                        System.out.println("("+mapInt[x][yPrime]+")"+"["+x+","+yPrime+"]"+"{"+mapInt[x][y]+"}"+x+","+y+"<-->"+i);
+
+                                    }else {
+                                        tempVisTree =0;
+                                        System.out.println("("+mapInt[x][yPrime]+")"+"["+x+","+yPrime+"]"+"{"+mapInt[x][y]+"}"+x+","+y+"<<<"+i);
+
+                                        break;
+                                    }
+                                }
+                            }case 3 -> {
+                                for (int xPrime = x+1; xPrime <= xOutOffset[i]; xPrime++) {
+                                    if (mapInt[xPrime][y] < mapInt[x][y]){
+                                        tempVisTree++;
+                                        System.out.print(mapInt[xPrime][y]);
+                                        System.out.println("("+mapInt[xPrime][y]+")"+"["+xPrime+","+y+"]"+"{"+mapInt[x][y]+"}"+x+","+y+"-->"+i);
+
+                                    }else {
+                                        tempVisTree =0;
+                                        System.out.println("("+mapInt[xPrime][y]+")"+"["+xPrime+","+y+"]"+"{"+mapInt[x][y]+"}"+x+","+y+"<<<"+i);
+
+                                        break;
+                                    }
+                                }
+                            }
+
                         }
 
-                    }else if (i == 1 && j == mapInt[i].length-2){
-                        xPose = i + xOffset[0];
-                        yPose = j + yOffset[0];
-                        tempNum = mapInt[xPose][yPose];
-                        if (mapInt[i][j] > tempNum ){
-                            visibleTree++;
-                        }
-                        System.out.println("---------------"+tempNum);
 
-                        xPose = i + xOffset[2];
-                        yPose = j + yOffset[2];
-                        tempNum = mapInt[xPose][yPose];
-                        if (mapInt[i][j] > tempNum ){
+                        if(tempVisTree > 0){
                             visibleTree++;
-                        }
-                    } else if (i == mapInt.length-2 && j == 1) {
-                        xPose = i + xOffset[1];
-                        yPose = j + yOffset[1];
-                        tempNum = mapInt[xPose][yPose];
-                        if (mapInt[i][j] > tempNum ){
-                            visibleTree++;
-                        }
-                        System.out.println("---------------"+tempNum);
-
-                        xPose = i + xOffset[3];
-                        yPose = j + yOffset[3];
-                        tempNum = mapInt[xPose][yPose];
-                        if (mapInt[i][j] > tempNum ){
-                            visibleTree++;
-                        }
-                    } else if (i == mapInt.length-2 && j == mapInt[i].length-2) {
-                        xPose = i + xOffset[2];
-                        yPose = j + yOffset[2];
-                        tempNum = mapInt[xPose][yPose];
-                        if (mapInt[i][j] > tempNum ){
-                            visibleTree++;
-                        }
-                        System.out.println("---------------"+tempNum);
-
-                        xPose = i + xOffset[3];
-                        yPose = j + yOffset[3];
-                        tempNum = mapInt[xPose][yPose];
-                        if (mapInt[i][j] > tempNum ){
-                            visibleTree++;
-                        }
-                    }else {
-                        xPose = i + xOffset[2];
-                        yPose = j + yOffset[2];
-                        tempNum = mapInt[xPose][yPose];
-                        if (mapInt[i][j] > tempNum ){
-                            visibleTree++;
-                        }
-                        System.out.println("---------------"+tempNum);
-
-                        xPose = i + xOffset[1];
-                        yPose = j + yOffset[1];
-                        tempNum = mapInt[xPose][yPose];
-                        if (mapInt[i][j] > tempNum ){
-                            visibleTree++;
+                            touched = true;
+                            tempVisTree =0;
                         }
                     }
-
+                        System.out.println("");
                 }
 
             }
-            System.out.println("");
         }
 
         System.out.println("");
         System.out.println("No of visible trees are:  "+visibleTree);
 
+
+//        for (int j = 0; j < 4; j++) {
+//            int map = mapInt[xOutOffset[j]][yOutOffset[j]];
+//            System.out.println("---------");
+//            System.out.println(xOutOffset[j]);
+//            System.out.println(yOutOffset[j]);
+//            System.out.println("---------");
+//            System.out.println(j+""+j+" (()(()(())()() "+ map);
+//            System.out.println(map+"  ===============");
+//
+//        }
+//        System.out.println("");
+//
+//        System.out.println("End");
 
 
 
